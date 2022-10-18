@@ -2,10 +2,10 @@ package web.service;
 
 import web.model.Car;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public interface CarService {
-    public ArrayList<Car> show(int id);
+    public List<Car> show(int id);
 
 }

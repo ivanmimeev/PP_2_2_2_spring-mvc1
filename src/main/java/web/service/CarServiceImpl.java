@@ -11,7 +11,7 @@ public class CarServiceImpl implements CarService {
 
 
     @Override
-    public ArrayList<Car> show(int amount) {
+    public List<Car> show(int amount) {
         ArrayList<Car> carList = new ArrayList<>();
 
         carList.add(new Car(1, "v4", "black"));
@@ -20,16 +20,13 @@ public class CarServiceImpl implements CarService {
         carList.add(new Car(4, "v7", "blue"));
         carList.add(new Car(5, "v8", "red"));
 
-        ArrayList<Car> List1 = new ArrayList<>();
-        for (Car test : carList) {
-            if (test.getId() <= amount) {
-                List1.add(test);
-            }
-            if (amount>5){
-                return carList;
-            }
+        if (amount <= 5) {
+            return carList.subList(0, amount);
+        } else {
+            return carList;
         }
-        return List1;
+
     }
 }
+
 
