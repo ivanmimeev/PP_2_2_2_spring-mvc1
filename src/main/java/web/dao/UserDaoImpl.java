@@ -4,34 +4,27 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> allUser() {
-        return entityManager
-                .createQuery("Select a from User a ", User.class)
-                .getResultList();
+        return entityManager.createQuery("Select a from User a ", User.class).getResultList();
     }
 
     @Override
-    @Transactional
     public void add(User user) {
         entityManager.persist(user);
     }
 
 
     @Override
-    @Transactional
     public void edit(User user) {
         entityManager.merge(user);
     }
@@ -46,7 +39,6 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) {
         int isSuccessful = entityManager.createQuery("delete from User p where p.id=:id")

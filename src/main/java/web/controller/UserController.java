@@ -1,22 +1,20 @@
 package web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import web.model.User;
 import web.service.UserService;
-import web.service.UserServiceImpl;
-
-import java.util.List;
 
 @RequestMapping("/users")
 @Controller
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String allUsers(ModelMap model) {
@@ -31,7 +29,7 @@ public class UserController {
         return "edit";
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PATCH)
     public String editUser(@ModelAttribute("user") User user) {
         userService.edit(user);
         return "redirect:/users";
@@ -49,7 +47,7 @@ public class UserController {
         userService.add(user);
         return "redirect:/users";
     }
-    @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+    @DeleteMapping(value="/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         this.userService.deleteById(id);
         return "redirect:/users";
